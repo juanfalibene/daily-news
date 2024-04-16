@@ -8,12 +8,31 @@ import {
   setInput,
   setSignedIn,
 } from "../features/userSlice";
-import { Avatar, Button, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Container,
+  Divider,
+  Typography,
+  ButtonGroup,
+} from "@mui/material";
 
 const Navbar = () => {
-  const [inputValue, setInputValue] = useState("tech");
+  const [inputValue, setInputValue] = useState("technology");
   const isSignedIn = useSelector(selectSignedIn);
   const userData = useSelector(selectUserData);
+
+  const categories = [
+    "general",
+    "world",
+    "nation",
+    "business",
+    "technology",
+    "entertainment",
+    "sports",
+    "science",
+    "health",
+  ];
 
   const dispatch = useDispatch();
 
@@ -23,60 +42,70 @@ const Navbar = () => {
     googleLogout();
   };
 
-  const handleClick = (e) => {
-    console.log(e);
+  const handleClick = (cat) => {
+    setInputValue(cat);
+    dispatch(setInput(cat));
   };
 
   return (
-    <header className='header'>
-      <Typography variant='h5' component='h1'>
-        Daily News
-      </Typography>
-      <nav className='navbar'>
-        {isSignedIn ? (
-          <div className='news__search'>
-            <TextField
-              variant='outlined'
-              size='small'
-              className='input__search'
-              value={inputValue}
-              onChange={(e) => setInputValue.apply(e.target.value)}
-              placeholder=''
-            />
-            <Button
-              size='medium'
-              variant='outlined'
-              className='btn__submit'
-              onClick={handleClick}
-            >
-              Search
-            </Button>
-          </div>
-        ) : (
-          ""
-        )}
+    <Container>
+      <header className='header'>
+        <Typography variant='h5' component='h1' color='text.primary'>
+          dN
+        </Typography>
+        <nav className='navbar'>
+          {isSignedIn ? (
+            <div className='news__search'>
+              <ButtonGroup
+                variant='outlined'
+                aria-label='Category button group'
+              >
+                {categories.map((category) => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        handleClick(category);
+                      }}
+                      variant={
+                        category === inputValue ? "contained" : "outlined"
+                      }
+                      key={category}
+                    >
+                      {category}
+                    </Button>
+                  );
+                })}
+              </ButtonGroup>
+            </div>
+          ) : (
+            ""
+          )}
 
-        {isSignedIn ? (
-          <div className='navbar__user__data'>
-            <Avatar
-              className='user'
-              src={userData?.picture}
-              alt={userData?.name}
-            />
-            <Typography variant='body2' component='p' className='signedIn'>
-              {userData?.given_name}
+          {isSignedIn ? (
+            <div className='navbar__user__data'>
+              <Avatar
+                className='user'
+                src={userData?.picture}
+                alt={userData?.name}
+              />
+              <Button size='small' variant='outlined' onClick={logOut}>
+                Log out
+              </Button>
+            </div>
+          ) : (
+            <Typography
+              variant='body2'
+              color='text.primary'
+              component='p'
+              className='notSignedIn'
+            >
+              Log in for Daily News
             </Typography>
-            <Button size='small' variant='outlined' onClick={logOut}>
-              Log out
-            </Button>
-          </div>
-        ) : (
-          <Typography variant='body2' component='p' className='notSignedIn'>
-            Log in for Daily News
-          </Typography>
-        )}
-      </nav>
-    </header>
+          )}
+        </nav>
+      </header>
+      <Divider />
+    </Container>
   );
 };
 
