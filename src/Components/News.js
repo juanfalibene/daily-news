@@ -17,7 +17,7 @@ import {
 const News = () => {
   const searchInput = useSelector(selectUserInput);
   const apikey = "b020e78d6c337c965e8282b57ee419a2";
-  const url = `https://gnews.io/api/v4/search?q=${searchInput}&lang=es&max=20&apikey=${apikey}`;
+  const url = `https://gnews.io/api/v4/top-headlines?category=${searchInput}&lang=es&max=9&apikey=${apikey}`;
   const dispatch = useDispatch();
   const [blogs, setBlogs] = useState();
 
@@ -30,7 +30,6 @@ const News = () => {
         dispatch(setBlogData(response.data));
         setBlogs(response.data);
         setLoading(false);
-        console.log(blogs);
       })
       .catch((error) => {
         console.log(error);
@@ -44,7 +43,11 @@ const News = () => {
         {blogs?.articles?.map((blog) => (
           <Grid item xs={12} md={4}>
             <Card
-              sx={{ maxWidth: 600, backgroundColor: "rgba(0, 0, 0, 0.08)" }}
+              sx={{
+                maxWidth: 600,
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.08)",
+              }}
               variant='outlined'
             >
               <CardMedia
@@ -79,6 +82,8 @@ const News = () => {
                 <CardActions>
                   <Button
                     href={blog.url}
+                    target='_blank'
+                    rel='noreferrer'
                     color={"primary"}
                     fullWidth
                     sx={{ mt: 3, textTransform: "initial" }}
