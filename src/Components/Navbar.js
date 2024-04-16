@@ -21,6 +21,7 @@ import {
   MenuItem,
   Hidden,
 } from "@mui/material";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const [inputValue, setInputValue] = useState("technology");
@@ -60,9 +61,7 @@ const Navbar = () => {
   return (
     <Container>
       <header className='header'>
-        <Typography variant='h5' component='h1' color='text.primary'>
-          dN
-        </Typography>
+        <Logo width={"2.51em"} height={"1.51em"}></Logo>
         <nav className='navbar'>
           {isSignedIn ? (
             <div className='news__search'>
