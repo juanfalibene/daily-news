@@ -15,6 +15,11 @@ import {
   Divider,
   Typography,
   ButtonGroup,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+  Hidden,
 } from "@mui/material";
 
 const Navbar = () => {
@@ -47,6 +52,11 @@ const Navbar = () => {
     dispatch(setInput(cat));
   };
 
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+    dispatch(setInput(e.target.value));
+  };
+
   return (
     <Container>
       <header className='header'>
@@ -56,26 +66,48 @@ const Navbar = () => {
         <nav className='navbar'>
           {isSignedIn ? (
             <div className='news__search'>
-              <ButtonGroup
-                variant='outlined'
-                aria-label='Category button group'
-              >
-                {categories.map((category) => {
-                  return (
-                    <Button
-                      onClick={() => {
-                        handleClick(category);
-                      }}
-                      variant={
-                        category === inputValue ? "contained" : "outlined"
-                      }
-                      key={category}
-                    >
-                      {category}
-                    </Button>
-                  );
-                })}
-              </ButtonGroup>
+              <Hidden mdDown>
+                <ButtonGroup
+                  variant='outlined'
+                  aria-label='Category button group'
+                >
+                  {categories.map((category) => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          handleClick(category);
+                        }}
+                        variant={
+                          category === inputValue ? "contained" : "outlined"
+                        }
+                        key={category}
+                      >
+                        {category}
+                      </Button>
+                    );
+                  })}
+                </ButtonGroup>
+              </Hidden>
+              <Hidden mdUp>
+                <FormControl fullWidth>
+                  <InputLabel id='select-category'>Category</InputLabel>
+                  <Select
+                    labelId='select-category'
+                    id='select-category'
+                    value={inputValue}
+                    label='Category'
+                    onChange={handleChange}
+                  >
+                    {categories.map((category) => {
+                      return (
+                        <MenuItem value={category} fullWidth>
+                          {category}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Hidden>
             </div>
           ) : (
             ""
