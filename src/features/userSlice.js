@@ -5,7 +5,7 @@ const userSlice = createSlice({
   initialState: {
     isSignedIn: false,
     userData: null,
-    searchInput: "tech", // reemplzar por data inicial
+    searchInput: "technology",
     blogData: null,
   },
   reducers: {
@@ -16,10 +16,10 @@ const userSlice = createSlice({
       state.userData = action.payload;
     },
     setInput: (state, action) => {
-      state.setInput = action.payload;
+      state.searchInput = action.payload;
     },
     setBlogData: (state, action) => {
-      state.setBlogData = action.payload;
+      state.blogData = action.payload;
     },
   },
 });
