@@ -23,6 +23,20 @@ const News = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const published = (fullDate) => {
+    const publishedDate = new Date(fullDate);
+    const today = new Date();
+    const difference = today - publishedDate;
+    const daysBefore = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+    if (daysBefore > 0) {
+      return `Hace ${daysBefore} dias`;
+    } else {
+      const hoursBefore = Math.floor(difference / (1000 * 60 * 60));
+      return `Hace ${hoursBefore} ${hoursBefore > 1 ? "horas" : "hora"}`;
+    }
+  };
+
   useEffect(() => {
     axios
       .get(url)
@@ -40,7 +54,7 @@ const News = () => {
     <Container>
       {loading ? <CircularProgress /> : ""}
       <Grid container spacing={2} mb={4} mt={1}>
-        {blogs?.articles?.map((blog) => (
+        {blogs?.articles?.map((blog, index) => (
           <Grid item xs={12} md={4}>
             <Card
               sx={{
@@ -49,6 +63,7 @@ const News = () => {
                 backgroundColor: "rgba(0, 0, 0, 0.08)",
               }}
               variant='outlined'
+              key={index}
             >
               <CardMedia
                 sx={{
@@ -74,7 +89,7 @@ const News = () => {
                   {blog.title}
                 </Typography>
                 <Typography variant='body2' color='text.secondary' mb={2}>
-                  {blog.source.name} {blog.publishedAt}
+                  {blog.source.name} {published(blog.publishedAt)}
                 </Typography>
                 <Typography variant='body2' color='text.secondary'>
                   {blog.description}
