@@ -17,7 +17,7 @@ import {
 const News = () => {
   const searchInput = useSelector(selectUserInput);
   const apikey = "b020e78d6c337c965e8282b57ee419a2";
-  const url = `https://gnews.io/api/v4/top-headlines?category=${searchInput}&lang=es&max=9&apikey=${apikey}`;
+  const url = `https://gnews.io/api/v4/top-headlines?category=${searchInput}&lang=en&max=9&apikey=${apikey}`;
   const dispatch = useDispatch();
   const [blogs, setBlogs] = useState();
 
@@ -30,10 +30,21 @@ const News = () => {
     const daysBefore = Math.floor(difference / (1000 * 60 * 60 * 24));
 
     if (daysBefore > 0) {
-      return `Hace ${daysBefore} dias`;
+      return `${daysBefore} days ago`;
     } else {
       const hoursBefore = Math.floor(difference / (1000 * 60 * 60));
-      return `Hace ${hoursBefore} ${hoursBefore > 1 ? "horas" : "hora"}`;
+      if (hoursBefore > 0) {
+        return `${hoursBefore} ${hoursBefore > 1 ? "hours" : "hour"} ago`;
+      } else {
+        const minutesBefore = Math.floor(difference / (1000 * 60));
+        if (minutesBefore > 0) {
+          return `${minutesBefore} ${
+            minutesBefore > 1 ? "minutes" : "minute"
+          } ago`;
+        } else {
+          return "Just Now";
+        }
+      }
     }
   };
 
